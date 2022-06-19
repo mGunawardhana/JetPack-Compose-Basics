@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -43,42 +44,50 @@ fun MyApp(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun MyScreenContent(names:List<String> = listOf("Android", "There")) {
+fun MyScreenContent(names: List<String> = List(1000) { "Hello Android $it" }) {
     var counterState by remember {
         mutableStateOf(0)
     }
-    Column {
-        for (name : String in names) {
+    Column(modifier = Modifier.fillMaxHeight()) {
+        NameList(names = names, modifier = Modifier.weight(1f))
+        for (name: String in names) {
             Greeting(name = name)
 //            Greeting(name = "There")
         }
 //            Greeting(name = "Android")
         Counter(
             count = counterState,
-            updateCount = { newCount : Int ->
+            updateCount = { newCount :int ->
                 counterState = newCount
             }
         )
-        if (counterState > 5){
+        if (counterState > 5) {
             Text(text = "I love the count")
         }
     }
 }
 
 @Composable
-fun Counter(count: Int, updateCount:(Int) -> Unit){
+fun NameList(names: List<String>, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        for (name: String in names) {
+            Greeting(name = name)
+        }
+    }
+
+}
+
+@Composable
+fun Counter(count: Int, updateCount: (Int) -> Unit) {
 
     /**------------------------ button Added ------------------------ */
-            Button(onClick = {updateCount(count + 1)}) {
+    Button(onClick = { updateCount(count + 1) }) {
         Text(text = "I've been clicked $count times")
-
     }
 }
 
 @Composable
 fun Greeting(name: String) {
-
-
     /** ------------------------ changing background colour in text ------------------------ */
     Surface(color = Color.Unspecified) {
 
@@ -88,7 +97,6 @@ fun Greeting(name: String) {
             modifier = Modifier.padding(16.dp)
         )
     }
-
 }
 
 @Preview(showBackground = true)
