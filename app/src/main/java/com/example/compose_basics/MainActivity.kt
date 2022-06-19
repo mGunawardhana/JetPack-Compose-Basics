@@ -3,7 +3,7 @@ package com.example.compose_basics
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -20,21 +20,37 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Compose_BasicsTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+            MyApp {
+                MyScreenContent()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun MyApp(content: @Composable () -> Unit) {
+    Compose_BasicsTheme {
+        // A surface container using the 'background' color from the theme
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            content()
+        }
+    }
+}
+
+@Composable
+fun MyScreenContent(){
+    Column() {
+        Greeting(name = "Android")
+        Greeting(name = "There")
+
+    }
+}
+
+@Composable
+fun Greeting(name: String) {
 
 
     //changing background colour in text
@@ -43,10 +59,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         //spacing - 16 dp in colour background area
         Text(
             text = "Hello $name!",
-            modifier = Modifier
-                .background(color = Color.LightGray)
-                .padding(16.dp)
-
+            modifier = Modifier.padding(16.dp)
         )
     }
 
@@ -56,7 +69,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    Compose_BasicsTheme {
-        Greeting("Android")
+    MyApp {
+        MyScreenContent()
     }
 }
