@@ -6,10 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,7 +31,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp(content: @Composable () -> Unit) {
     Compose_BasicsTheme {
-        // A surface container using the 'background' color from the theme
+
+        /** ---------- A surface container using the 'background' color from the theme ---------- */
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
@@ -41,10 +43,34 @@ fun MyApp(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun MyScreenContent(){
-    Column() {
-        Greeting(name = "Android")
-        Greeting(name = "There")
+fun MyScreenContent(names:List<String> = listOf("Android", "There")) {
+    var counterState by remember {
+        mutableStateOf(0)
+    }
+    Column {
+        for (name : String in names) {
+            Greeting(name = name)
+//            Greeting(name = "There")
+        }
+//            Greeting(name = "Android")
+        Counter(
+            count = counterState,
+            updateCount = { newCount : Int ->
+                counterState = newCount
+            }
+        )
+        if (counterState > 5){
+            Text(text = "I love the count")
+        }
+    }
+}
+
+@Composable
+fun Counter(count: Int, updateCount:(Int) -> Unit){
+
+    /**------------------------ button Added ------------------------ */
+            Button(onClick = {updateCount(count + 1)}) {
+        Text(text = "I've been clicked $count times")
 
     }
 }
@@ -53,10 +79,10 @@ fun MyScreenContent(){
 fun Greeting(name: String) {
 
 
-    //changing background colour in text
+    /** ------------------------ changing background colour in text ------------------------ */
     Surface(color = Color.Unspecified) {
 
-        //spacing - 16 dp in colour background area
+        /** ---------- spacing - 16 dp in colour background area ---------- */
         Text(
             text = "Hello $name!",
             modifier = Modifier.padding(16.dp)
@@ -65,7 +91,6 @@ fun Greeting(name: String) {
 
 }
 
-//@Preview(fontScale = 1.5f)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
