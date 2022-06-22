@@ -1,2 +1,2 @@
 # JetPack-Compose-Basics
-jetpack compose basics | Kotlin | still developping ....
+still developping .... | Kotlin
